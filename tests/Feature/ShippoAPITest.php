@@ -15,81 +15,81 @@ beforeEach(function () {
 });
 
 // Valid Tracking Number Tests
-// test('can fetch tracking info for valid tracking number', function () {
+test('can fetch tracking info for valid tracking number', function () {
 
-//     // replace with a valid tracking number
-//     // $trackingNumber = '901231231231231232d';
-//     $shipment = Shipment::factory()->create([
-//         'tracking_number' => '9012' . uniqid(), // Generate unique tracking number
-//         'status' => 'IN_TRANSIT',
-//         'email' => 'test@test.com',
-//         'carrier' => 'shippo'
-//     ]);
-//     $response = $this->getJson("/api/shipments/{$shipment->tracking_number}");
+    // replace with a valid tracking number
+    // $trackingNumber = '901231231231231232d';
+    $shipment = Shipment::factory()->create([
+        'tracking_number' => '9012' . uniqid(), // Generate unique tracking number
+        'status' => 'CREATED',
+        'email' => 'test@test.com',
+        'carrier' => 'shippo'
+    ]);
+    $response = $this->getJson("/api/shipments/{$shipment->tracking_number}");
 
-//     $response->assertOk()
-//         ->assertJsonStructure([
-//             'shipment' => [
-//                 'tracking_number',
-//                 'status',
-//                 'created_at',
-//                 'updated_at',
-//                 'email',
-//                 'events' => []
-//             ]
-//         ]);
-// });
+    $response->assertOk()
+        ->assertJsonStructure([
+            'shipment' => [
+                'tracking_number',
+                'status',
+                'created_at',
+                'updated_at',
+                'email',
+                'events' => []
+            ]
+        ]);
+});
 
-// // Invalid Tracking Number Tests
-// test('returns error for invalid tracking number', function () {
-//     // Mock the Shippo API response for invalid tracking number
-//     Http::fake([
-//         '*' => Http::response([
-//             'message' => 'Invalid tracking number'
-//         ], 404)
-//     ]);
+// Invalid Tracking Number Tests
+test('returns error for invalid tracking number', function () {
+    // Mock the Shippo API response for invalid tracking number
+    Http::fake([
+        '*' => Http::response([
+            'message' => 'Invalid tracking number'
+        ], 404)
+    ]);
 
-//     $trackingNumber = 'INVALID123';
-//     $response = $this->getJson("/api/shipments/$trackingNumber");
+    $trackingNumber = 'INVALID123';
+    $response = $this->getJson("/api/shipments/$trackingNumber");
 
-//     $response->assertNotFound()
-//         ->assertJson(['error' => 'Tracking number not found']);
-// });
-
-
-// test('tracking events are properly logged in database', function () {
-//     // Create a test shipment
-//     $shipment = Shipment::factory()->create([
-//         'tracking_number' => '9012' . uniqid(), // Generate unique tracking number
-//         'status' => 'IN_TRANSIT',
-//         'email' => 'test@test.com',
-//         'carrier' => 'shippo'
-//     ]);
+    $response->assertNotFound()
+        ->assertJson(['error' => 'Tracking number not found']);
+});
 
 
-//     // Make the API request
-//     // 2 request are made to create 2 shipment events
-//     $response = $this->getJson("/api/shipments/{$shipment->tracking_number}");
-//     $response = $this->getJson("/api/shipments/{$shipment->tracking_number}");
+test('tracking events are properly logged in database', function () {
+    // Create a test shipment
+    $shipment = Shipment::factory()->create([
+        'tracking_number' => '9012' . uniqid(), // Generate unique tracking number
+        'status' => 'CREATED',
+        'email' => 'test@test.com',
+        'carrier' => 'shippo'
+    ]);
 
-//     // Assert response is successful
-//     $response->assertOk();
-//     $response = $response->json();
-//     // Assert all tracking events were logged
-//     $this->assertDatabaseHas('shipment_events', [
-//         'shipment_id' => $shipment->id,
-//         'status' => $response['shipment']['status'],
-//     ]);
 
-//     // Assert events count
-//     $this->assertGreaterThanOrEqual(1, ShipmentEvent::where('shipment_id', $shipment->id)->count());
-// });
+    // Make the API request
+    // 2 request are made to create 2 shipment events
+    $response = $this->getJson("/api/shipments/{$shipment->tracking_number}");
+    $response = $this->getJson("/api/shipments/{$shipment->tracking_number}");
+
+    // Assert response is successful
+    $response->assertOk();
+    $response = $response->json();
+    // Assert all tracking events were logged
+    $this->assertDatabaseHas('shipment_events', [
+        'shipment_id' => $shipment->id,
+        'status' => $response['shipment']['status'],
+    ]);
+
+    // Assert events count
+    $this->assertGreaterThanOrEqual(1, ShipmentEvent::where('shipment_id', $shipment->id)->count());
+});
 
 test('shipment events updating correctly', function () {
     //test shipment
     $shipment = Shipment::factory()->create([
         'tracking_number' => '9012' . uniqid(),
-        'status' => 'IN_TRANSIT',
+        'status' => 'CREATED',
         'email' => 'test@test.com',
         'carrier' => 'shippo'
     ]);
@@ -137,7 +137,7 @@ test('notification for lost shipment', function () {
     //test shipment
     $shipment = Shipment::factory()->create([
         'tracking_number' => '9012' . uniqid(),
-        'status' => 'IN_TRANSIT',
+        'status' => 'CREATED',
         'email' => 'test@test.com',
         'carrier' => 'shippo'
     ]);

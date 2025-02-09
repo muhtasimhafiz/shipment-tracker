@@ -68,10 +68,13 @@ To similuate the live tracking events, I am calling the shippo api https://api.g
 
 Therefore whenever a user wants to track a shipment, I am generating the tracking information(randomly) from the shippo api asumming that this would be the response in live api. I am storing the response in the database.
 
+Intial event for shipment is assumed as CREATED.
+
 ## Supported Statuses
 
 The service supports the following shipment statuses:
 
+-   `CREATED`
 -   `DELIVERED`
 -   `LOST`
 -   `IN_TRANSIT`
@@ -83,6 +86,7 @@ The service automatically maps Shippo statuses to internal status codes:
 
 | Shippo Status | Internal Status |
 | ------------- | --------------- |
+| PRE_TRANSIT   | CREATED         |
 | UNKNOWN       | LOST            |
 | DELIVERED     | DELIVERED       |
 | TRANSIT       | IN_TRANSIT      |

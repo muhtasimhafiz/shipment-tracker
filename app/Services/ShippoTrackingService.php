@@ -13,6 +13,8 @@ enum ShipmentStatus: string
 
   case IN_TRANSIT = 'IN_TRANSIT';
   case CANCELLED = 'CANCELLED';
+
+  case CREATED = 'CREATED';
 }
 
 class ShippoTrackingService
@@ -22,7 +24,6 @@ class ShippoTrackingService
     'SHIPPO_DELIVERED' => 'DELIVERED',
     'SHIPPO_TRANSIT' => 'IN_TRANSIT',
     'SHIPPO_RETURNED' => 'CANCELLED',
-    // 'SHIPPO_CANCELLED' => 'CANCELLED',
   ];
 
   private $statusMapper = [
@@ -107,8 +108,8 @@ class ShippoTrackingService
     // default event for the shipment when it is registered
     $trackingHistory = [];
     $event_data = [
-      'status' => ShipmentStatus::IN_TRANSIT->value,
-      'description' => "Shipment is in transit",
+      'status' => ShipmentStatus::CREATED->value,
+      'description' => "The carrier has received the electronic shipment information.",
       'raw_data' => $trackingHistory,
       'occurred_at' => now(),
       'address_from' => [
