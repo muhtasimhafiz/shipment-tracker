@@ -16,23 +16,7 @@ Route::prefix('shipments')->group(function () {
     ->where('tracking_number', '[A-Za-z0-9]+')
     ->name('shipments.show');
 
-  // Get shipment events
-  Route::get('/{tracking_number}/events', [ShipmentController::class, 'events'])
-    ->where('tracking_number', '[A-Za-z0-9]+')
-    ->name('shipments.events');
-
-  // Get all shipments
-  Route::get('/', [ShipmentController::class, 'index'])
-    ->name('shipments.index');
-
   // Create new shipment tracking
   Route::post('/', [ShipmentController::class, 'store'])
     ->name('shipments.store');
-
-  // Force refresh tracking
-  Route::post('/{tracking_number}/refresh', [ShipmentController::class, 'refresh'])
-    ->where('tracking_number', '[A-Za-z0-9]+')
-    ->name('shipments.refresh');
-
-
 });

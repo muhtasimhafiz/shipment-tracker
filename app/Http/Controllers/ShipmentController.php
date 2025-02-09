@@ -14,7 +14,6 @@ class ShipmentController extends Controller
     {
         $this->trackingService = $trackingService;
     }
-    //
 
     public function show($trackingNumber)
     {
@@ -38,7 +37,7 @@ class ShipmentController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'tracking_number' => 'required|string|max:100|unique:shipments,tracking_number',
+            'tracking_number' => 'required|string|min:5|max:100|unique:shipments,tracking_number',
             'email' => 'required|email|max:100',
             'carrier' => 'required|string|max:100',
         ]);

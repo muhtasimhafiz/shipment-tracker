@@ -72,11 +72,6 @@ class ShippoTrackingService
 
   public function registerTracking($data)
   {
-    // in live api
-    // $trackingInfo = Shippo_Track::create([
-    //   'tracking_number' => $data['tracking_number'],
-    //   'carrier' => $data['carrier'],
-    // ])
 
     try {
       $shipment = Shipment::create([
@@ -87,7 +82,6 @@ class ShippoTrackingService
       ]);
 
       // I am creating an event for the shipment when it is registered because according to the docs, when the tracking number is registered, it returns a tracking event
-      // $this->createEvent($shipment, $trackingInfo); //for live api
       $this->createEvent($shipment);
     } catch (\Exception $e) {
       if ($shipment ?? false) {
