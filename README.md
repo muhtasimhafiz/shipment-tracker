@@ -23,10 +23,17 @@ This service provides functionality to:
 
 SQLite is used as the database.
 
+## Requirements
+
+-   PHP 8.1 or higher
+-   Laravel 10.x
+-   Composer
+-   Node.js & NPM
+
 ## Installation
 
 1. composer install
-2. npm install
+2. npm install && npm run build
 3. php artisan migrate
 4. php artisan serve
 5. In env file, set the Shippo API key to variable SHIPPO_KEY (TEST API KEY: shippo_test_f5e442b5facf39c6f9061c62aa0fef4a76620d0a)
@@ -53,7 +60,7 @@ GET {{url}}/api/shipments/{{tracking_number}}
 
 ## Postman Collection
 
-I have attached the postman collection file in the root of the project.
+The "Shippo Tracking API" Postman collection is available [here](https://github.com/muhtasimhafiz/shipment-tracker/blob/main/Shippo.postman_collection.json)
 
 ## Assumptions
 
@@ -112,4 +119,3 @@ For testing purposes, the service includes:
 -   Random status generation
 -   Default transit status for new shipments
 -   Mock address data
-
