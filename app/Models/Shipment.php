@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\LostMail;
 
 class Shipment extends Model
 {
+    use HasFactory;
+
     protected $fillable = ['tracking_number', 'carrier', 'status', 'email'];
 
     public function events()

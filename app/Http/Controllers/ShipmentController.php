@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Services\ShippoTrackingService;
 use App\Models\Shipment;
-use App\Models\ShipmentEvent;
-use App\Notifications\ShipmentLostNotification;
 
 class ShipmentController extends Controller
 {
@@ -21,7 +19,7 @@ class ShipmentController extends Controller
     public function show($trackingNumber)
     {
         // Validate tracking number
-        if (empty($trackingNumber) || !is_string($trackingNumber) ) {
+        if (empty($trackingNumber) || !is_string($trackingNumber)) {
             return response()->json(['error' => 'Invalid tracking number'], 422);
         }
 
@@ -30,7 +28,8 @@ class ShipmentController extends Controller
             return response()->json(['error' => 'Tracking number not found'], 404);
         }
 
-        $shipment = $this->trackingService->checkStatus($shipment);
+        $trackingInfo = $this->trackingService->getTracking($shipment->tracking_number);
+        $shipment = $this->trackingService->checkStatus($shipment, $trackingInfo);
         return response()->json([
             'shipment' => $shipment->load('events'),
         ]);
